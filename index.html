@@ -33,6 +33,20 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
 </head>
 <body>
+  <header class="sitebar" role="banner">
+    <div class="sitebar__brand">
+      <a href="https://www.gardeauarbres.fr" target="_blank" rel="noreferrer noopener" class="sitebar__logo">
+        Gard Eau Arbres
+      </a>
+      <span class="sitebar__tagline">Sanctuaire Vivant</span>
+    </div>
+    <div class="sitebar__cta">
+      <a class="btn btn--ghost btn--compact" href="https://www.gardeauarbres.fr" target="_blank" rel="noreferrer noopener">
+        ← Retourner sur gardeauarbres.fr
+      </a>
+    </div>
+  </header>
+
   <!-- Ambient background -->
   <div id="ambient">
     <div class="grain"></div>
@@ -97,9 +111,13 @@
           </div>
         </aside>
 
-        <section class="mapstage">
+        <section class="mapstage" data-tilt="true">
           <!-- Simple isometric-ish SVG map. Points are injected from JS -->
           <div id="mapSvgWrap" class="mapstage__svg"></div>
+          <div class="mapbadge" id="mapBadge" aria-live="polite">
+            <strong>Carte en chargement…</strong>
+            <span>Patientez un instant.</span>
+          </div>
 
           <div class="mapstage__footer">
             <div id="statusText" class="status">Charge la carte…</div>
@@ -314,7 +332,7 @@
           <p>Choisis un moyen de soutien. Les compteurs sont locaux (démo) et prêts à être reliés à ton backend.</p>
 
           <div class="sponsor__grid">
-            <a class="sponsor__item" href="#" data-sponsor="finom">
+            <a class="sponsor__item" href="https://app.finom.co/en/signup?fnm_view=referral&amp;fnm_refid=nPyLSAMH" target="_blank" rel="noreferrer noopener" data-sponsor="finom">
               <div class="sponsor__logo">Finom</div>
               <div class="sponsor__meta">
                 <div>Parrainer</div>
@@ -473,6 +491,7 @@
     <source src="assets/audio/ambience.mp3" type="audio/mpeg">
   </audio>
 
+  <script src="config.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

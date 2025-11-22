@@ -2,9 +2,37 @@
 // Version optimisée professionnelle
 // Vanilla JS, performant, accessible, robuste
 
-const BACKEND_ENABLED = false; // set true when backend/ is deployed
-const CACHE_VERSION = '1.0.0';
-const DEBOUNCE_DELAY = 300; // ms pour la recherche
+const CONFIG_DEFAULTS = {
+  BACKEND_ENABLED: false,
+  BACKEND_URL: "backend",
+  CACHE_VERSION: "1.0.0",
+  DEBOUNCE_DELAY: 300,
+  IMAGE_LAZY_LOAD_MARGIN: "50px",
+  SITE_URL: "https://www.gardeauarbres.fr",
+  NURSERY_URL: "#",
+  DONATE_URL: "#",
+  VOLUNTEER_URL: "#",
+  WORKSHOP_URL: "#",
+  FEATURES: {
+    AR_ENABLED: true,
+    AUDIO_ENABLED: true,
+    TOUR_ENABLED: true,
+    QUEST_ENABLED: true,
+    ISO3D_ENABLED: true,
+    PRINT_ENABLED: true
+  }
+};
+
+const APP_CONFIG = (() => {
+  const userConfig = window.CONFIG || {};
+  const merged = {...CONFIG_DEFAULTS, ...userConfig};
+  merged.FEATURES = {...CONFIG_DEFAULTS.FEATURES, ...(userConfig.FEATURES || {})};
+  return merged;
+})();
+
+const BACKEND_ENABLED = Boolean(APP_CONFIG.BACKEND_ENABLED);
+const CACHE_VERSION = APP_CONFIG.CACHE_VERSION;
+const DEBOUNCE_DELAY = APP_CONFIG.DEBOUNCE_DELAY;
 
 const SCREENS = ["portal","map","plant","quest","future","asso","sponsor","tour","iso3d"];
 const state = {
@@ -139,7 +167,8 @@ function loadLocal(){
 async function track(type, id=""){
   if(!BACKEND_ENABLED) return;
   try{
-    const response = await fetch("backend/track.php", {
+    const endpoint = `${APP_CONFIG.BACKEND_URL?.replace(/\/$/, "") || "backend"}/track.php`;
+    const response = await fetch(endpoint, {
       method:"POST",
       headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({type, id}),
@@ -256,7 +285,7 @@ function setupImageObserver() {
         }
       });
     }, {
-      rootMargin: '50px'
+      rootMargin: APP_CONFIG.IMAGE_LAZY_LOAD_MARGIN || '50px'
     });
   }
 }
@@ -271,6 +300,25 @@ function loadImageLazy(imgEl, src) {
     // Fallback pour navigateurs sans IntersectionObserver
     imgEl.src = src;
   }
+}
+
+function initParallax(){
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const stage = document.querySelector(".mapstage[data-tilt=\"true\"]");
+  if(!stage) return;
+  const setTilt = (xDeg, yDeg)=>{
+    document.documentElement.style.setProperty('--tiltX', `${xDeg}deg`);
+    document.documentElement.style.setProperty('--tiltY', `${yDeg}deg`);
+  };
+  stage.addEventListener("pointermove", (event)=>{
+    const rect = stage.getBoundingClientRect();
+    const relX = (event.clientX - rect.left) / rect.width - 0.5;
+    const relY = (event.clientY - rect.top) / rect.height - 0.5;
+    const xDeg = relX * 6;
+    const yDeg = relY * -4;
+    setTilt(xDeg, yDeg);
+  });
+  stage.addEventListener("pointerleave", ()=> setTilt(0,0));
 }
 
 // ---------- Layers / Filters avec debounce ----------
@@ -461,6 +509,9 @@ function renderMap(){
     g.setAttribute('role', 'button');
     g.setAttribute('tabindex', '0');
     g.setAttribute('aria-label', `${p.name} - ${p.layer}`);
+    if(p.totem) g.classList.add("point--totem");
+    if(p.category) g.classList.add(`point--${p.category}`);
+    if(p.layer) g.dataset.layer = p.layer;
 
     const aura = document.createElementNS("http://www.w3.org/2000/svg","circle");
     aura.setAttribute("cx", p.pos.x);
@@ -502,6 +553,20 @@ function renderMap(){
   });
   
   pointsG.appendChild(fragment);
+  updateMapBadge();
+}
+
+function updateMapBadge(){
+  const badge = $("#mapBadge");
+  if(!badge) return;
+  if(!state.plants.length){
+    badge.innerHTML = `<strong>Carte en chargement…</strong><span>Patientez un instant.</span>`;
+    return;
+  }
+  const total = state.plants.length;
+  const filtered = state.filtered.length || total;
+  const totems = state.filtered.filter(p=>p.totem).length;
+  badge.innerHTML = `<strong>${filtered} espèce(s) visibles</strong><span>${totems} totems • ${total} au total</span>`;
 }
 
 // ---------- Plant screen avec lazy loading ----------
@@ -960,6 +1025,14 @@ function bumpSponsor(id){
   saveLocal();
 }
 
+function openExternal(url, fallbackScreen){
+  if(url && url !== "#"){
+    window.open(url, "_blank", "noopener,noreferrer");
+  }else if(fallbackScreen){
+    go(fallbackScreen);
+  }
+}
+
 // ---------- Events avec gestion d'erreurs ----------
 function wireEvents(){
   const enterBtn = $("#enterBtn");
@@ -1032,7 +1105,11 @@ function wireEvents(){
 
   const nurseryBtn = $("#nurseryBtn");
   if(nurseryBtn) nurseryBtn.onclick = ()=>{
-    modal("Pépinière (démo)", "Relie ce bouton à ta boutique / inventaire.");
+    if(APP_CONFIG.NURSERY_URL && APP_CONFIG.NURSERY_URL !== "#"){
+      openExternal(APP_CONFIG.NURSERY_URL);
+    }else{
+      modal("Pépinière", `Relie ce bouton à ta boutique sur <strong>${APP_CONFIG.SITE_URL}</strong>.`);
+    }
   };
 
   const playAudioBtn = $("#playAudio");
@@ -1049,21 +1126,36 @@ function wireEvents(){
   if(regenFutureBtn) regenFutureBtn.onclick = renderFuture;
 
   const donateBtn = $("#donateBtn");
-  if(donateBtn) donateBtn.onclick = ()=> go("sponsor");
+  if(donateBtn) donateBtn.onclick = ()=> openExternal(APP_CONFIG.DONATE_URL, "sponsor");
   
   const volunteerBtn = $("#volunteerBtn");
-  if(volunteerBtn) volunteerBtn.onclick = ()=> modal("Bénévolat", "Ajoute ici ton formulaire / lien.");
+  if(volunteerBtn) volunteerBtn.onclick = ()=> {
+    if(APP_CONFIG.VOLUNTEER_URL && APP_CONFIG.VOLUNTEER_URL !== "#"){
+      openExternal(APP_CONFIG.VOLUNTEER_URL);
+    }else{
+      modal("Bénévolat", "Ajoute ici ton formulaire ou relie une page dédiée sur ton site.");
+    }
+  };
   
   const workshopBtn = $("#workshopBtn");
-  if(workshopBtn) workshopBtn.onclick = ()=> modal("Ateliers", "Ajoute tes dates et réservations.");
+  if(workshopBtn) workshopBtn.onclick = ()=> {
+    if(APP_CONFIG.WORKSHOP_URL && APP_CONFIG.WORKSHOP_URL !== "#"){
+      openExternal(APP_CONFIG.WORKSHOP_URL);
+    }else{
+      modal("Ateliers", "Ajoute les dates et réservations disponibles sur gardeauarbres.fr.");
+    }
+  };
 
   $$(".sponsor__item").forEach(a=>{
     a.addEventListener("click",(e)=>{
-      e.preventDefault();
       const sponsor = a.dataset.sponsor;
       if(sponsor) {
         bumpSponsor(sponsor);
-        modal("Merci 💚","Compteur incrémenté (démo). Remplace le href par ton lien.");
+      }
+      const url = a.getAttribute("href");
+      if(!url || url==="#" ){
+        e.preventDefault();
+        modal("Merci 💚","Compteur incrémenté (démo). Ajoute un lien pour ce sponsor.");
       }
     });
   });
@@ -1162,6 +1254,7 @@ function handleHash(){
   try {
     loadLocal();
     setupImageObserver();
+    initParallax();
     wireEvents();
     await loadPlants();
     renderFuture();

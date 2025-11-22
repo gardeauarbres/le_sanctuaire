@@ -29,10 +29,11 @@ const CONFIG = {
   },
   
   // URLs
-  NURSERY_URL: '#', // Lien vers la boutique/pépinière
-  DONATE_URL: '#', // Lien vers les dons
-  VOLUNTEER_URL: '#', // Lien vers le bénévolat
-  WORKSHOP_URL: '#' // Lien vers les ateliers
+  SITE_URL: 'https://www.gardeauarbres.fr',
+  NURSERY_URL: 'https://www.gardeauarbres.fr/boutique/',
+  DONATE_URL: 'https://www.gardeauarbres.fr/don/',
+  VOLUNTEER_URL: 'https://www.gardeauarbres.fr/benevolat/',
+  WORKSHOP_URL: 'https://www.gardeauarbres.fr/ateliers/' // Lien vers les ateliers
   
 };
 
