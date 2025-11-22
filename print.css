@@ -1,0 +1,24 @@
+@page { size: A4; margin: 12mm; }
+body{
+  font-family: system-ui, sans-serif; color:#111; background:#fff;
+}
+.header{ text-align:center; margin-bottom:8mm; }
+.header h1{ margin:0 0 2mm 0; font-size:20px;}
+.meta{ font-size:12px; color:#333; }
+
+.map{ border:1px solid #ddd; padding:4mm; border-radius:6px; }
+#mapWrap{ width:100%; }
+.map svg{ width:100%; height:auto; }
+
+.legend{ display:flex; gap:10mm; font-size:12px; margin-top:4mm; }
+.dot{ width:8px; height:8px; display:inline-block; border-radius:999px; margin-right:2mm; }
+.dot.totem{ background:#eac15a; }
+.dot.rare{ background:#6ab3ff; }
+.dot.nitro{ background:#5adf8f; }
+
+.list{ margin-top:8mm;}
+.list h2{ margin:0 0 2mm; font-size:14px;}
+#plantList{ font-size:11px; columns:2; column-gap:6mm; }
+#plantList li{ break-inside:avoid; margin-bottom:1.5mm; }
+
+.footer{ position:fixed; bottom:8mm; left:12mm; right:12mm; font-size:10px; text-align:center; color:#444;}

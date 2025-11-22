@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f2219" />
+  <meta name="description" content="Parcours immersif numérique de la forêt-jardin Gard Eau Arbres. Découvrez les 7 strates de végétation, les plantes totems et la biodiversité du sanctuaire vivant à Thémines (Lot)." />
+  <meta name="keywords" content="forêt-jardin, permaculture, biodiversité, plantes, Thémines, Lot, Gard Eau Arbres" />
+  <meta name="author" content="Gard Eau Arbres" />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Gard Eau Arbres — Le Sanctuaire Vivant" />
+  <meta property="og:description" content="Parcours immersif numérique de la forêt-jardin Gard Eau Arbres" />
+  <meta property="og:url" content="https://www.gardeauarbres.fr" />
+  <meta property="og:locale" content="fr_FR" />
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gard Eau Arbres — Le Sanctuaire Vivant" />
+  <meta name="twitter:description" content="Parcours immersif numérique de la forêt-jardin Gard Eau Arbres" />
+  
+  <title>Gard Eau Arbres — Le Sanctuaire Vivant</title>
+  
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/assets/img/icon-192.png" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css" />
+  
+  <!-- Preconnect pour performances -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+</head>
+<body>
+  <!-- Ambient background -->
+  <div id="ambient">
+    <div class="grain"></div>
+    <div class="vignette"></div>
+    <div class="leaves" aria-hidden="true"></div>
+  </div>
+
+  <!-- App shell -->
+  <main id="app" class="app" role="main">
+    <!-- 1) Portail -->
+    <section id="portal" class="screen screen--active" data-screen="portal">
+      <div class="portal">
+        <div class="portal__badge">Sanctuaire Vivant</div>
+        <h1>Gard Eau Arbres</h1>
+        <p class="subtitle">Entrez dans une forêt-jardin de résilience et d’abondance.</p>
+
+        <div class="portal__actions">
+          <button class="btn btn--primary" id="enterBtn" type="button" aria-label="Entrer dans la forêt-jardin">
+            Entrer dans la forêt
+            <span class="btn__spark" aria-hidden="true"></span>
+          </button>
+          <button class="btn btn--ghost" id="muteBtn" type="button" aria-pressed="false" aria-label="Activer ou couper l'ambiance sonore">
+            Ambiance : ON
+          </button>
+        </div>
+
+        <div class="portal__hint">
+          <span>✨ Astuce : sur le terrain, scanne les QR codes pour ouvrir directement une plante.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2) Carte -->
+    <section id="map" class="screen" data-screen="map">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToPortal" title="Retour">
+            ←
+          </button>
+          <div>
+            <div class="kicker">Carte du sanctuaire</div>
+            <div class="title">Choisis une zone ou une strate</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <input id="searchInput" class="search" type="search" placeholder="Rechercher une plante (ex: schisandra)..." aria-label="Rechercher une plante" autocomplete="off" />
+          <button class="iconbtn" id="openQuest" title="Ouvrir la quête">🧭</button>
+          <button class="iconbtn" id="printBtn" title="Imprimer plan A4">🖨️</button>
+        </div>
+      </header>
+
+      <div class="maplayout">
+        <aside class="layers">
+          <div class="layers__title">7 strates</div>
+          <div class="layers__list" id="layerFilters"></div>
+
+          <div class="layers__title mt">Légende</div>
+          <div class="legend">
+            <div><span class="dot dot--totem"></span> Plante Totem</div>
+            <div><span class="dot dot--rare"></span> Rare & utile</div>
+            <div><span class="dot dot--nitro"></span> Fertilité / bois</div>
+          </div>
+        </aside>
+
+        <section class="mapstage">
+          <!-- Simple isometric-ish SVG map. Points are injected from JS -->
+          <div id="mapSvgWrap" class="mapstage__svg"></div>
+
+          <div class="mapstage__footer">
+            <div id="statusText" class="status">Charge la carte…</div>
+            <div class="tips">Clique sur un point lumineux pour ouvrir une fiche vivante.</div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 3) Fiche vivante -->
+    <section id="plant" class="screen" data-screen="plant" aria-live="polite">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMap" title="Retour à la carte">←</button>
+          <div>
+            <div class="kicker" id="plantLayer">Strate</div>
+            <div class="title" id="plantName">Plante</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="iconbtn" id="toggleFavorite" title="Favori">☆</button>
+          <button class="iconbtn" id="shareBtn" title="Partager">🔗</button>
+        </div>
+      </header>
+
+      <div class="plant">
+        <div class="plant__media">
+          <img id="plantImg" alt="" loading="lazy" decoding="async" />
+          <div class="media__overlay">
+            <button class="pill" id="playAudio">▶ Guide vocal</button>
+            <button class="pill" id="openAR">📍 AR (démo)</button>
+          </div>
+        </div>
+
+        <div class="plant__content">
+          <div class="chips" id="plantTags"></div>
+          <p id="plantIntro" class="plant__intro"></p>
+
+          <div class="grid">
+            <div class="card">
+              <h3>Fiche rapide</h3>
+              <ul id="plantFacts" class="facts"></ul>
+            </div>
+
+            <div class="card">
+              <h3>Histoire & usages</h3>
+              <p id="plantStory"></p>
+            </div>
+
+            <div class="card">
+              <h3>Écosystème</h3>
+              <ul id="plantEco" class="facts"></ul>
+            </div>
+
+            <div class="card">
+              <h3>Dans la pépinière</h3>
+              <p id="plantNursery"></p>
+              <button class="btn btn--primary w100" id="nurseryBtn">Voir disponibilité</button>
+            </div>
+          </div>
+
+          <div class="navrow">
+            <button class="btn btn--ghost" id="prevPlant">← Précédent</button>
+            <button class="btn btn--ghost" id="nextPlant">Suivant →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4) Quête -->
+    <section id="quest" class="screen" data-screen="quest">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMap2">←</button>
+          <div>
+            <div class="kicker">Mini‑jeu</div>
+            <div class="title">La Quête du Jardinier</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="iconbtn" id="resetQuest" title="Recommencer">↺</button>
+        </div>
+      </header>
+
+      <div class="quest">
+        <div class="quest__panel">
+          <h2>Objectif</h2>
+          <p>Trouve les <strong>5 plantes Totems</strong> sur la carte. Chaque totem te révèle un secret de résilience.</p>
+          <div class="quest__progress">
+            <div id="questProgressText">0 / 5 trouvées</div>
+            <div class="bar"><div id="questBar"></div></div>
+          </div>
+
+          <div class="quest__list" id="questList"></div>
+
+          <div class="quest__reward" id="questReward" hidden>
+            <h3>Bravo 🌟</h3>
+            <p>Tu as fini la quête. Voici ton badge :</p>
+            <div class="badge">Gardien.ne du Sanctuaire</div>
+            <p class="small">Code symbolique : <strong>VIVANT10</strong> (à relier plus tard à ta boutique).</p>
+            <button class="btn btn--primary" id="backAfterQuest">Retour à la carte</button>
+          </div>
+        </div>
+
+        <div class="quest__stage">
+          <div class="quest__hint">Indice : regarde les points avec une aura dorée ✨</div>
+          <div class="quest__map" id="questMapWrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5) Vision du futur -->
+    <section id="future" class="screen" data-screen="future">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMap3">←</button>
+          <div>
+            <div class="kicker">Projection</div>
+            <div class="title">Vision du Futur — 2035</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="future">
+        <div class="future__scene">
+          <canvas id="futureCanvas" width="1200" height="650" aria-label="Vision du futur"></canvas>
+          <div class="future__overlay">
+            <h2>Une forêt-jardin à maturité</h2>
+            <p>
+              Cette scène est une projection poétique et technique : canopée fermée,
+              sous-étage nourricier, sol couvert, eau infiltrée, biodiversité en retour.
+            </p>
+            <button class="btn btn--primary" id="regenFuture">Regénérer la scène</button>
+          </div>
+        </div>
+
+        <div class="future__stats card">
+          <h3>Hypothèses d’impact</h3>
+          <ul class="facts" id="futureStats"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6) Association -->
+    <section id="asso" class="screen" data-screen="asso">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMap4">←</button>
+          <div>
+            <div class="kicker">Gard Eau Arbres</div>
+            <div class="title">Association & projets</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="asso">
+        <div class="card">
+          <h2>Notre mission</h2>
+          <p>
+            Restaurer le vivant par la plantation d’arbres utiles, la pédagogie de terrain et des
+            projets reproductibles en milieu rural.
+          </p>
+          <div class="metricrow">
+            <div class="metric">
+              <div class="metric__num" id="treesCount">0</div>
+              <div class="metric__label">arbres plantés</div>
+            </div>
+            <div class="metric">
+              <div class="metric__num" id="visitsCount">0</div>
+              <div class="metric__label">visites sanctuaire</div>
+            </div>
+            <div class="metric">
+              <div class="metric__num" id="speciesCount">0</div>
+              <div class="metric__label">espèces suivies</div>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn--primary" id="donateBtn">Soutenir / Don</button>
+            <button class="btn btn--ghost" id="volunteerBtn">Devenir bénévole</button>
+            <button class="btn btn--ghost" id="workshopBtn">Voir les ateliers</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Projets en cours</h3>
+          <ul class="facts">
+            <li>Forêt-jardin modèle Hortus (7 strates)</li>
+            <li>Expérimentation d’espèces résilientes sur sol calcaire</li>
+            <li>Pépinière locale : semis, boutures, acclimatation</li>
+            <li>Actions pédagogiques et plantation participative</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7) Parrainages -->
+    <section id="sponsor" class="screen" data-screen="sponsor">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMap5">←</button>
+          <div>
+            <div class="kicker">Parrainages</div>
+            <div class="title">Portail des soutiens</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="sponsor">
+        <div class="card sponsor__card">
+          <h2>Multisoutien</h2>
+          <p>Choisis un moyen de soutien. Les compteurs sont locaux (démo) et prêts à être reliés à ton backend.</p>
+
+          <div class="sponsor__grid">
+            <a class="sponsor__item" href="#" data-sponsor="finom">
+              <div class="sponsor__logo">Finom</div>
+              <div class="sponsor__meta">
+                <div>Parrainer</div>
+                <div class="small"><span id="finomClicks">0</span> clics</div>
+              </div>
+              <div class="qr">QR</div>
+            </a>
+            <a class="sponsor__item" href="#" data-sponsor="paypal">
+              <div class="sponsor__logo">PayPal</div>
+              <div class="sponsor__meta">
+                <div>Faire un don</div>
+                <div class="small"><span id="paypalClicks">0</span> clics</div>
+              </div>
+              <div class="qr">QR</div>
+            </a>
+            <a class="sponsor__item" href="#" data-sponsor="lydia">
+              <div class="sponsor__logo">Lydia</div>
+              <div class="sponsor__meta">
+                <div>Soutenir</div>
+                <div class="small"><span id="lydiaClicks">0</span> clics</div>
+              </div>
+              <div class="qr">QR</div>
+            </a>
+          </div>
+
+          <div class="actions mt">
+            <button class="btn btn--primary" id="shareSanctuary">Partager le sanctuaire</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 8) Visite guidée -->
+    <section id="tour" class="screen" data-screen="tour">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMapTour">←</button>
+          <div>
+            <div class="kicker">Parcours terrain</div>
+            <div class="title">Visite guidée</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="iconbtn" id="startTourBtn" title="Démarrer">▶</button>
+        </div>
+      </header>
+
+      <div class="tour">
+        <div class="tour__panel card">
+          <h2>Itinéraire</h2>
+          <p class="small">Ordre conseillé pour une visite sur ton terrain. Modifie <code>data/tour.json</code>.</p>
+          <ol id="tourList" class="tour__list"></ol>
+
+          <div class="tour__controls">
+            <button class="btn btn--ghost" id="tourPrev">← Étape</button>
+            <button class="btn btn--primary" id="tourOpenPlant">Ouvrir la plante</button>
+            <button class="btn btn--ghost" id="tourNext">Étape →</button>
+          </div>
+
+          <div class="tour__audio card">
+            <h3>Visite audio auto</h3>
+            <p class="small">Lit automatiquement les guides vocaux des plantes de l’itinéraire.</p>
+            <div class="tour__audioControls">
+              <button class="btn btn--primary" id="tourPlayPause">▶ Lecture</button>
+              <button class="btn btn--ghost" id="tourStop">⏹ Stop</button>
+              <label class="small">
+                <input type="checkbox" id="tourAutoNext" checked />
+                Auto‑suivant
+              </label>
+              <label class="small">
+                Volume
+                <input type="range" id="tourVolume" min="0" max="1" step="0.05" value="0.8" />
+              </label>
+            </div>
+            <div class="small mt" id="tourAudioStatus">Prêt.</div>
+          </div>
+        </div>
+
+        <div class="tour__stage card">
+          <h3>Carte + sentiers</h3>
+          <div id="tourMapWrap"></div>
+          <div class="small">Clique un sentier sur la carte pour voir son descriptif.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9) Carte 3D isométrique (beta) -->
+    <section id="iso3d" class="screen" data-screen="iso3d" aria-live="polite">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="backToMapIso">←</button>
+          <div>
+            <div class="kicker">Vue 3D</div>
+            <div class="title">Carte isométrique (beta)</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="iconbtn" id="regenIso">↺</button>
+        </div>
+      </header>
+
+      <div class="iso3d">
+        <div class="iso3d__canvas card">
+          <canvas id="isoCanvas" width="1200" height="700"></canvas>
+          <div class="iso3d__hud">
+            <button class="btn btn--ghost" id="isoToggleLabels">Labels</button>
+            <button class="btn btn--ghost" id="isoCenter">Centrer</button>
+          </div>
+        </div>
+        <div class="iso3d__panel card">
+          <h3>Mode 3D</h3>
+          <p class="small">
+            Vue isométrique simple basée sur tes données.  
+            Si tu veux une vraie scène Three.js, remplace <code>iso3d.js</code>.
+          </p>
+          <button class="btn btn--primary w100" id="isoOpenSelected">Ouvrir la plante sélectionnée</button>
+          <button class="btn btn--ghost w100 mt" id="threeToggle">Passer en Three.js (online)</button>
+          <div class="small mt">Astuce : clique un marqueur pour sélectionner une plante.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Global bottom nav -->
+    <nav class="bottomnav">
+      <button class="bottomnav__btn" data-go="map">🗺️ Carte</button>
+      <button class="bottomnav__btn" data-go="quest">🧭 Quête</button>
+      <button class="bottomnav__btn" data-go="future">🌀 Futur</button>
+      <button class="bottomnav__btn" data-go="asso">🌿 Asso</button>
+      <button class="bottomnav__btn" data-go="sponsor">🤝 Soutenir</button>
+      <button class="bottomnav__btn" data-go="tour">🚶 Visite</button>
+      <button class="bottomnav__btn" data-go="iso3d">🧊 3D</button>
+    </nav>
+
+      <footer class="footer">
+        <div><strong>Gard Eau Arbres</strong> — Ramon Alain (G.E.A)</div>
+        <div>Thémines (Lot 46) · www.gardeauarbres.fr</div>
+        <div>Tél: 07 45 29 39 80 · Email: gard.eau.arbres@gmail.com</div>
+      </footer>
+
+    <!-- Modal -->
+    <dialog id="modal" class="modal">
+      <form method="dialog" class="modal__card">
+        <div class="modal__title" id="modalTitle">Titre</div>
+        <div class="modal__body" id="modalBody">Contenu</div>
+        <div class="modal__actions">
+          <button class="btn btn--primary" value="ok">OK</button>
+        </div>
+      </form>
+    </dialog>
+  </main>
+
+  <!-- Audio ambience -->
+  <audio id="ambience" loop preload="auto">
+    <!-- Put your own ambience file in assets/audio/ambience.mp3 -->
+    <source src="assets/audio/ambience.mp3" type="audio/mpeg">
+  </audio>
+
+  <script src="app.js"></script>
+</body>
+</html>

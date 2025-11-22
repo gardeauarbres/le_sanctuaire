@@ -1,0 +1,1139 @@
+{
+  "meta": {
+    "version": "0.2.0",
+    "author": "Gard Eau Arbres",
+    "notes": "Édite librement ce fichier : positions, tags, totems, textes, images, audio. | dataset étendu Lot(46) sol calcaire."
+  },
+  "plants": [
+    {
+      "id": "aulne_glutineux",
+      "name": "Aulne glutineux",
+      "latin": "Alnus glutinosa",
+      "layer": "canopy",
+      "zone": "Proche zone humide / puits",
+      "category": "nitro",
+      "totem": false,
+      "tags": [
+        "fixateur d’azote",
+        "humide"
+      ],
+      "intro": "Arbre fixateur d’azote qui adore les zones humides.",
+      "story": "Idéal pour stabiliser et fertiliser autour des points d’eau.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-30°C",
+      "soil": "Frais à humide",
+      "water": "Moyen à élevé",
+      "yield": "Bois/biomasse",
+      "eco": [
+        "Azote",
+        "Habitat faune"
+      ],
+      "nursery": "Baliveaux autochtones.",
+      "image": "assets/img/aulne_glutineux.jpg",
+      "audio": "",
+      "pos": {
+        "x": 420,
+        "y": 520
+      }
+    },
+    {
+      "id": "ginkgo",
+      "name": "Ginkgo",
+      "latin": "Ginkgo biloba",
+      "layer": "canopy",
+      "zone": "Prairie haute",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "arbre ancien",
+        "médicinal",
+        "urbain"
+      ],
+      "intro": "Arbre fossile vivant, très résistant, feuilles utilisées pour la mémoire et la circulation.",
+      "story": "Extrêmement tolérant à la pollution et à la sécheresse une fois établi.",
+      "secret": "",
+      "origin": "Chine",
+      "hardiness": "-25°C",
+      "soil": "Tous sols profonds",
+      "water": "Faible après reprise",
+      "yield": "Semences comestibles (femelles)",
+      "eco": [
+        "Arbre d’avenir",
+        "Longévité exceptionnelle"
+      ],
+      "nursery": "Jeunes plants issus de semis sélectionnés.",
+      "image": "assets/img/ginkgo.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1240,
+        "y": 120
+      }
+    },
+    {
+      "id": "kaki",
+      "name": "Kaki",
+      "latin": "Diospyros kaki",
+      "layer": "canopy",
+      "zone": "Prairie abritée",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "fruit d’automne",
+        "rustique"
+      ],
+      "intro": "Fruitier asiatique donnant des kakis sucrés après blettissement.",
+      "story": "Très bien en climat du Lot avec exposition chaude; tolère calcaire si sol vivant.",
+      "secret": "",
+      "origin": "Chine",
+      "hardiness": "-18°C",
+      "soil": "Profond, vivant, calcaire modéré",
+      "water": "Moyen en été",
+      "yield": "20–60 fruits/arbre",
+      "eco": [
+        "Fruits tardifs pour faune",
+        "Canopée productive"
+      ],
+      "nursery": "Greffés variétés non astringentes et classiques.",
+      "image": "assets/img/kaki.jpg",
+      "audio": "",
+      "pos": {
+        "x": 980,
+        "y": 170
+      }
+    },
+    {
+      "id": "micocoulier",
+      "name": "Micocoulier",
+      "latin": "Celtis australis",
+      "layer": "canopy",
+      "zone": "Prairie haute",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "sec",
+        "rustique",
+        "biodiversité"
+      ],
+      "intro": "Grand arbre méditerranéen très résilient à la sécheresse, excellent arbre d’ombrage.",
+      "story": "Supporte très bien les sols calcaires. Fruits comestibles pour faune et humains.",
+      "secret": "",
+      "origin": "Bassin méditerranéen",
+      "hardiness": "-20°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible après reprise",
+      "yield": "Petits fruits sucrés",
+      "eco": [
+        "Arbre d’ombre",
+        "Nourrit oiseaux",
+        "Très résistant au chaud"
+      ],
+      "nursery": "Plants de 1–2 ans disponibles sur commande.",
+      "image": "assets/img/micocoulier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1340,
+        "y": 180
+      }
+    },
+    {
+      "id": "murier_noir",
+      "name": "Mûrier noir",
+      "latin": "Morus nigra",
+      "layer": "canopy",
+      "zone": "Prairie / lisière",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "fruits",
+        "très mellifère",
+        "ancien"
+      ],
+      "intro": "Arbre fruitier ancien donnant des mûres noires parfumées.",
+      "story": "Aime la chaleur, supporte le calcaire, croissance modérée mais très productif.",
+      "secret": "",
+      "origin": "Asie occidentale",
+      "hardiness": "-18°C",
+      "soil": "Profond, calcaire OK",
+      "water": "Moyen",
+      "yield": "10–30 kg/arbre",
+      "eco": [
+        "Ombre nourricière",
+        "Sol vivant sous canopée"
+      ],
+      "nursery": "Greffés en pot, production locale.",
+      "image": "assets/img/murier_noir.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1220,
+        "y": 250
+      }
+    },
+    {
+      "id": "robinier",
+      "name": "Robinier faux‑acacia",
+      "latin": "Robinia pseudoacacia",
+      "layer": "canopy",
+      "zone": "Lande / lisière",
+      "category": "nitro",
+      "totem": true,
+      "tags": [
+        "bois durable",
+        "mellifère",
+        "azote"
+      ],
+      "intro": "Arbre pionnier à croissance rapide, bois imputrescible et floraison très mellifère.",
+      "story": "Excellent pour amorcer un sol vivant, mais à contenir par taille/gestion des rejets.",
+      "secret": "Totem Bois d’avenir : produire du bois durable tout en fertilisant le sol.",
+      "origin": "Amérique du Nord",
+      "hardiness": "-25°C",
+      "soil": "Tolère calcaire, pauvre",
+      "water": "Faible",
+      "yield": "Bois + floraison",
+      "eco": [
+        "Fixation d’azote",
+        "Miel d’acacia",
+        "Ombre légère"
+      ],
+      "nursery": "Baliveaux et plants racines nues en saison.",
+      "image": "assets/img/robinier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 360,
+        "y": 340
+      }
+    },
+    {
+      "id": "sorbier_domestique",
+      "name": "Sorbier domestique",
+      "latin": "Sorbus domestica",
+      "layer": "canopy",
+      "zone": "Lande / prairie",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "arbre d’avenir",
+        "fruits tardifs"
+      ],
+      "intro": "Arbre patrimonial très adapté aux sols pauvres, fruits à cidre/compote.",
+      "story": "Supporte la sécheresse et le calcaire, longévité élevée.",
+      "secret": "",
+      "origin": "Europe du Sud",
+      "hardiness": "-20°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible",
+      "yield": "Fruits automnaux",
+      "eco": [
+        "Diversité génétique",
+        "Oiseaux"
+      ],
+      "nursery": "Semis sélectionnés pour adaptation locale.",
+      "image": "assets/img/sorbier_domestique.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1080,
+        "y": 120
+      }
+    },
+    {
+      "id": "amandier",
+      "name": "Amandier",
+      "latin": "Prunus dulcis",
+      "layer": "subcanopy",
+      "zone": "Lande en pente",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "sec",
+        "floraison précoce",
+        "amandes"
+      ],
+      "intro": "Fruitier sobre et idéal en sol caillouteux calcaire.",
+      "story": "Choisir variétés tardives pour éviter les gelées de printemps.",
+      "secret": "",
+      "origin": "Méditerranée",
+      "hardiness": "-15°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible",
+      "yield": "Amandes",
+      "eco": [
+        "Floraison pour pollinisateurs"
+      ],
+      "nursery": "Greffés variétés adaptées au sud-ouest.",
+      "image": "assets/img/amandier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 360,
+        "y": 180
+      }
+    },
+    {
+      "id": "aralia",
+      "name": "Aralia du Japon",
+      "latin": "Aralia elata",
+      "layer": "subcanopy",
+      "zone": "Zone fraîche",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "médicinal",
+        "biodiversité"
+      ],
+      "intro": "Petit arbre/arbuste à pousses comestibles et ombelle mellifère.",
+      "story": "Aime sols riches et frais; attire énormément d’insectes.",
+      "secret": "",
+      "origin": "Asie",
+      "hardiness": "-25°C",
+      "soil": "Frais, riche",
+      "water": "Moyen",
+      "yield": "Jeunes pousses",
+      "eco": [
+        "Floraison tardive",
+        "Refuge faune"
+      ],
+      "nursery": "Jeunes plants en pot.",
+      "image": "assets/img/aralia.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1100,
+        "y": 300
+      }
+    },
+    {
+      "id": "pawpaw",
+      "name": "Asiminier",
+      "latin": "Asimina triloba",
+      "layer": "subcanopy",
+      "zone": "Prairie",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "fruit tropical rustique",
+        "ombre légère"
+      ],
+      "intro": "Fruitier nord‑américain donnant des fruits crémeux au goût exotique.",
+      "story": "Aime un sol frais et profond. Pollinisation améliorée avec 2 variétés.",
+      "secret": "",
+      "origin": "Amérique du Nord",
+      "hardiness": "-25°C",
+      "soil": "Frais, riche, drainé",
+      "water": "Moyen, surtout jeune",
+      "yield": "10–25 fruits/arbre",
+      "eco": [
+        "Sous‑étage nourricier",
+        "Fleurs pour insectes saprophages"
+      ],
+      "nursery": "Greffés variétés précoces et tardives.",
+      "image": "assets/img/pawpaw.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1040,
+        "y": 220
+      }
+    },
+    {
+      "id": "figuier",
+      "name": "Figuier",
+      "latin": "Ficus carica",
+      "layer": "subcanopy",
+      "zone": "Prairie chaude",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "très sec",
+        "double récolte possible"
+      ],
+      "intro": "Indispensable en climat chaud, fruits sucrés et très rustiques.",
+      "story": "Tolère le calcaire et les sécheresses longues.",
+      "secret": "",
+      "origin": "Méditerranée",
+      "hardiness": "-15°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible",
+      "yield": "20–50 figues/arbre",
+      "eco": [
+        "Ombre légère",
+        "Fruits été-automne"
+      ],
+      "nursery": "Boutures racinées locales.",
+      "image": "assets/img/figuier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1180,
+        "y": 240
+      }
+    },
+    {
+      "id": "nashi",
+      "name": "Nashi (poire asiatique)",
+      "latin": "Pyrus pyrifolia",
+      "layer": "subcanopy",
+      "zone": "Prairie",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "poire croquante",
+        "rustique"
+      ],
+      "intro": "Poirier asiatique, fruits ronds très juteux et croquants.",
+      "story": "Aime les étés pas trop secs; paillage conseillé sur calcaire.",
+      "secret": "",
+      "origin": "Asie",
+      "hardiness": "-20°C",
+      "soil": "Frais, drainé, calcaire OK",
+      "water": "Moyen",
+      "yield": "15–40 fruits/arbre",
+      "eco": [
+        "Sous-étage nourricier"
+      ],
+      "nursery": "Greffés variétés précoces et tardives.",
+      "image": "assets/img/nashi.jpg",
+      "audio": "",
+      "pos": {
+        "x": 980,
+        "y": 260
+      }
+    },
+    {
+      "id": "noisetier",
+      "name": "Noisetier",
+      "latin": "Corylus avellana",
+      "layer": "subcanopy",
+      "zone": "Lisière mi-ombre",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "noisettes",
+        "haie"
+      ],
+      "intro": "Arbuste/ petit arbre très adapté au Lot.",
+      "story": "À conduire en cépée pour haie nourricière.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Neutre à calcaire",
+      "water": "Moyen",
+      "yield": "Noisettes",
+      "eco": [
+        "Chatons précoces",
+        "Refuge oiseaux"
+      ],
+      "nursery": "Jeunes plants.",
+      "image": "assets/img/noisetier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 820,
+        "y": 320
+      }
+    },
+    {
+      "id": "amelanchier",
+      "name": "Amélanchier",
+      "latin": "Amelanchier alnifolia",
+      "layer": "shrub",
+      "zone": "Prairie / lisière",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "petits fruits",
+        "hôte pollinisateurs"
+      ],
+      "intro": "Arbuste nord-américain très productif aux fruits type myrtille.",
+      "story": "Tolère bien le froid et le calcaire si sol paillé.",
+      "secret": "",
+      "origin": "Amérique du Nord",
+      "hardiness": "-30°C",
+      "soil": "Neutre à calcaire léger",
+      "water": "Moyen",
+      "yield": "2–5 kg/arbuste",
+      "eco": [
+        "Fleurs mellifères",
+        "Haie nourricière"
+      ],
+      "nursery": "Variétés productives en saison.",
+      "image": "assets/img/amelanchier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1040,
+        "y": 420
+      }
+    },
+    {
+      "id": "argousier",
+      "name": "Argousier",
+      "latin": "Hippophae rhamnoides",
+      "layer": "shrub",
+      "zone": "Lande en pente",
+      "category": "nitro",
+      "totem": true,
+      "tags": [
+        "fixateur d’azote",
+        "haie",
+        "fruits vitaminés"
+      ],
+      "intro": "Arbuste pionnier très rustique, fruits orange ultra riches en vitamine C.",
+      "story": "Idéal pour sols calcaires et pauvres, stabilise les talus. Dioïque : prévoir mâle/femelle (ou variétés autofertiles).",
+      "secret": "Totem Fertilité : les fixateurs d’azote nourrissent tout l’écosystème.",
+      "origin": "Eurasie",
+      "hardiness": "-30°C",
+      "soil": "Tous sols drainés, même calcaires",
+      "water": "Faible après reprise",
+      "yield": "2–7 kg/arbuste",
+      "eco": [
+        "Fixation d’azote",
+        "Abri pour oiseaux",
+        "Pionnier anti‑érosion"
+      ],
+      "nursery": "Variétés femelles + un mâle sélectionné en pépinière.",
+      "image": "assets/img/argousier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 260,
+        "y": 220
+      }
+    },
+    {
+      "id": "caragana",
+      "name": "Caraganier de Sibérie",
+      "latin": "Caragana arborescens",
+      "layer": "shrub",
+      "zone": "Lande ventée",
+      "category": "nitro",
+      "totem": false,
+      "tags": [
+        "fixateur d’azote",
+        "brise-vent"
+      ],
+      "intro": "Arbuste ultra rustique servant de brise-vent et de fertilisateur.",
+      "story": "Excellent sur sol pauvre calcaire, gousses jeunes comestibles.",
+      "secret": "",
+      "origin": "Sibérie",
+      "hardiness": "-35°C",
+      "soil": "Pauvre, calcaire",
+      "water": "Très faible",
+      "yield": "Biomasse / gousses",
+      "eco": [
+        "Azote",
+        "Anti-érosion"
+      ],
+      "nursery": "Semis faciles.",
+      "image": "assets/img/caragana.jpg",
+      "audio": "",
+      "pos": {
+        "x": 180,
+        "y": 300
+      }
+    },
+    {
+      "id": "cassissier",
+      "name": "Cassis",
+      "latin": "Ribes nigrum",
+      "layer": "shrub",
+      "zone": "Zone fraîche mi-ombre",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "petits fruits",
+        "mi-ombre"
+      ],
+      "intro": "Petit fruit noir riche en antioxydants, aime la fraîcheur.",
+      "story": "À installer en zones paillées et pas trop sèches.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Frais, riche",
+      "water": "Moyen",
+      "yield": "1–3 kg/pied",
+      "eco": [
+        "Fleurs pour abeilles"
+      ],
+      "nursery": "Boutures enracinées.",
+      "image": "assets/img/cassissier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1160,
+        "y": 520
+      }
+    },
+    {
+      "id": "eleagnus_umbellata",
+      "name": "Chalef d’automne",
+      "latin": "Elaeagnus umbellata",
+      "layer": "shrub",
+      "zone": "Lisière sèche",
+      "category": "nitro",
+      "totem": true,
+      "tags": [
+        "fixateur d’azote",
+        "très rustique"
+      ],
+      "intro": "Arbuste pionnier, fruits rouges riches en lycopène.",
+      "story": "Supporte très bien les sols calcaires et secs, croissance rapide.",
+      "secret": "Totem Haie comestible : un seul chalef peut lancer une haie résiliente.",
+      "origin": "Asie",
+      "hardiness": "-30°C",
+      "soil": "Pauvre, calcaire",
+      "water": "Faible",
+      "yield": "3–8 kg/arbuste",
+      "eco": [
+        "Fixation d’azote",
+        "Brise-vent"
+      ],
+      "nursery": "À bouturer massivement.",
+      "image": "assets/img/eleagnus_umbellata.jpg",
+      "audio": "",
+      "pos": {
+        "x": 720,
+        "y": 220
+      }
+    },
+    {
+      "id": "cornouille_male",
+      "name": "Cornouiller mâle",
+      "latin": "Cornus mas",
+      "layer": "shrub",
+      "zone": "Lisière",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "fruits",
+        "très précoce",
+        "calcaire"
+      ],
+      "intro": "Arbuste ancien donnant des cornouilles rouges pour confitures.",
+      "story": "Floraison très précoce, bonne plante mellifère.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible à moyen",
+      "yield": "2–6 kg/arbuste",
+      "eco": [
+        "Nectar précoce",
+        "Haie comestible"
+      ],
+      "nursery": "Plants en pot disponibles.",
+      "image": "assets/img/cornouille_male.jpg",
+      "audio": "",
+      "pos": {
+        "x": 560,
+        "y": 240
+      }
+    },
+    {
+      "id": "goji",
+      "name": "Goji",
+      "latin": "Lycium barbarum",
+      "layer": "shrub",
+      "zone": "Prairie sèche",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "baies",
+        "sec",
+        "médicinale"
+      ],
+      "intro": "Arbuste sobre donnant des baies rouges énergétiques.",
+      "story": "Tolère très bien le calcaire et la sécheresse.",
+      "secret": "",
+      "origin": "Asie",
+      "hardiness": "-25°C",
+      "soil": "Calcaire drainé",
+      "water": "Faible",
+      "yield": "1–3 kg/arbuste",
+      "eco": [
+        "Haie comestible",
+        "Nectar"
+      ],
+      "nursery": "Plants en pot.",
+      "image": "assets/img/goji.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1240,
+        "y": 500
+      }
+    },
+    {
+      "id": "goumi",
+      "name": "Goumi du Japon",
+      "latin": "Elaeagnus multiflora",
+      "layer": "shrub",
+      "zone": "Lisière",
+      "category": "nitro",
+      "totem": false,
+      "tags": [
+        "fixateur d’azote",
+        "petits fruits",
+        "haie"
+      ],
+      "intro": "Arbuste très facile, petits fruits rouges acidulés.",
+      "story": "Parfait pour haies comestibles et amélioration de sol.",
+      "secret": "",
+      "origin": "Japon",
+      "hardiness": "-25°C",
+      "soil": "Tout sol, calcaire OK",
+      "water": "Faible",
+      "yield": "2–5 kg/arbuste",
+      "eco": [
+        "Fixation d’azote",
+        "Nourrit oiseaux"
+      ],
+      "nursery": "Plants en pot.",
+      "image": "assets/img/goumi.jpg",
+      "audio": "",
+      "pos": {
+        "x": 650,
+        "y": 320
+      }
+    },
+    {
+      "id": "grenadier",
+      "name": "Grenadier rustique",
+      "latin": "Punica granatum",
+      "layer": "shrub",
+      "zone": "Prairie chaude",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "sec",
+        "fruits d’automne"
+      ],
+      "intro": "Arbuste méditerranéen, certaines variétés sont rustiques au Lot.",
+      "story": "Exposition chaude obligatoire, taille légère.",
+      "secret": "",
+      "origin": "Méditerranée / Asie",
+      "hardiness": "-12°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible",
+      "yield": "Grenades",
+      "eco": [
+        "Fleurs pour pollinisateurs"
+      ],
+      "nursery": "Jeunes plants rustiques.",
+      "image": "assets/img/grenadier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1320,
+        "y": 420
+      }
+    },
+    {
+      "id": "myrtille_rose",
+      "name": "Myrtille rose",
+      "latin": "Vaccinium corymbosum 'Pink Lemonade'",
+      "layer": "shrub",
+      "zone": "Zone fraîche",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "petits fruits",
+        "original",
+        "acidophile"
+      ],
+      "intro": "Variété surprenante aux fruits rosés, douce et parfumée.",
+      "story": "Nécessite sol acide ou butte dédiée.",
+      "secret": "",
+      "origin": "Horticole",
+      "hardiness": "-22°C",
+      "soil": "Acide, riche en matière organique",
+      "water": "Régulier",
+      "yield": "2–4 kg/arbuste",
+      "eco": [
+        "Fleurs pour abeilles",
+        "Haie comestible"
+      ],
+      "nursery": "À produire en pot avec substrat adapté.",
+      "image": "assets/img/myrtille_rose.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1120,
+        "y": 470
+      }
+    },
+    {
+      "id": "akebie",
+      "name": "Akébie",
+      "latin": "Akebia quinata",
+      "layer": "climber",
+      "zone": "Lisière mi‑ombre",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "liane",
+        "fruit comestible",
+        "rustique"
+      ],
+      "intro": "Liane ornementale et nourricière, fruits violet‑rose à chair douce.",
+      "story": "Supporte mi‑ombre, floraison parfumée au printemps.",
+      "secret": "",
+      "origin": "Japon / Corée",
+      "hardiness": "-20°C",
+      "soil": "Frais, drainé",
+      "water": "Moyen",
+      "yield": "1–3 kg/plante",
+      "eco": [
+        "Couvert vertical",
+        "Fleurs nectarifères"
+      ],
+      "nursery": "Jeunes plants en pot.",
+      "image": "assets/img/akebie.jpg",
+      "audio": "",
+      "pos": {
+        "x": 960,
+        "y": 360
+      }
+    },
+    {
+      "id": "schisandra",
+      "name": "Baie aux 5 saveurs",
+      "latin": "Schisandra chinensis",
+      "layer": "climber",
+      "zone": "Prairie lisière",
+      "category": "rare",
+      "totem": true,
+      "tags": [
+        "adaptogène",
+        "liane",
+        "rustique",
+        "médicinale"
+      ],
+      "intro": "Liane asiatique aux fruits rouges réputés pour soutenir l’énergie, le foie et la résistance au stress.",
+      "story": "Traditionnellement utilisée en médecine chinoise. Supporte le froid, aime les sols frais mais drainés.",
+      "secret": "Totem Résilience : une liane peut produire beaucoup sur très peu d’espace vertical.",
+      "origin": "Asie du Nord‑Est",
+      "hardiness": "-25°C",
+      "soil": "Humifère, neutre à légèrement acide",
+      "water": "Régulier les 2–3 premières années",
+      "yield": "3–5 kg/plante adulte",
+      "eco": [
+        "Fleurs mellifères",
+        "Bon couvert de lisière",
+        "Production verticale"
+      ],
+      "nursery": "Plants autofertiles Sadova N°1 disponibles en saison.",
+      "image": "assets/img/schisandra.jpg",
+      "audio": "assets/audio/schisandra.mp3",
+      "pos": {
+        "x": 1180,
+        "y": 340
+      }
+    },
+    {
+      "id": "kiwai",
+      "name": "Kiwai",
+      "latin": "Actinidia arguta",
+      "layer": "climber",
+      "zone": "Lisière mi-ombre",
+      "category": "rare",
+      "totem": false,
+      "tags": [
+        "liane",
+        "petits kiwis"
+      ],
+      "intro": "Liane très rustique, petits kiwis lisses à manger entiers.",
+      "story": "Préférer variétés autofertiles ou associer mâle/femelle.",
+      "secret": "",
+      "origin": "Asie",
+      "hardiness": "-25°C",
+      "soil": "Frais, riche",
+      "water": "Moyen",
+      "yield": "10–20 kg/pied",
+      "eco": [
+        "Production verticale",
+        "Ombre de pergola"
+      ],
+      "nursery": "Plants greffés et semis.",
+      "image": "assets/img/kiwai.jpg",
+      "audio": "",
+      "pos": {
+        "x": 920,
+        "y": 410
+      }
+    },
+    {
+      "id": "vigne_resistante",
+      "name": "Vigne résistante",
+      "latin": "Vitis vinifera (PIWI)",
+      "layer": "climber",
+      "zone": "Pergola sud",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "raisins",
+        "faible traitement"
+      ],
+      "intro": "Vigne sélectionnée pour forte résistance aux maladies.",
+      "story": "Parfaite pour production familiale sans cuivre.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-20°C",
+      "soil": "Calcaire drainé",
+      "water": "Faible à moyen",
+      "yield": "Raisins",
+      "eco": [
+        "Ombre estivale"
+      ],
+      "nursery": "Boutures lignifiées en hiver.",
+      "image": "assets/img/vigne_resistante.jpg",
+      "audio": "",
+      "pos": {
+        "x": 860,
+        "y": 360
+      }
+    },
+    {
+      "id": "achillee",
+      "name": "Achillée millefeuille",
+      "latin": "Achillea millefolium",
+      "layer": "herb",
+      "zone": "Prairie / bordures",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "mellifère",
+        "médicinale"
+      ],
+      "intro": "Vivace robuste, médicinale, attire les auxiliaires.",
+      "story": "Tolère la sécheresse et les sols calcaires.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Calcaire, drainé",
+      "water": "Faible",
+      "yield": "Fleurs/feuilles",
+      "eco": [
+        "Attire syrphes et abeilles"
+      ],
+      "nursery": "Godets au printemps.",
+      "image": "assets/img/achillee.jpg",
+      "audio": "",
+      "pos": {
+        "x": 760,
+        "y": 640
+      }
+    },
+    {
+      "id": "consoude",
+      "name": "Consoude",
+      "latin": "Symphytum officinale",
+      "layer": "herb",
+      "zone": "Potager vivant",
+      "category": "nitro",
+      "totem": false,
+      "tags": [
+        "biomasse",
+        "engrais vert",
+        "pollinisateurs"
+      ],
+      "intro": "Plante à racines profondes, grande productrice de biomasse pour paillage.",
+      "story": "Les feuilles riches en potasse nourrissent les fruitiers.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-20°C",
+      "soil": "Frais, riche",
+      "water": "Moyen",
+      "yield": "Coupe 3–5 fois/an",
+      "eco": [
+        "Pompe minérale",
+        "Fleurs mellifères"
+      ],
+      "nursery": "Boutures de racines faciles à multiplier.",
+      "image": "assets/img/consoude.jpg",
+      "audio": "",
+      "pos": {
+        "x": 820,
+        "y": 700
+      }
+    },
+    {
+      "id": "menthe_poiree",
+      "name": "Menthe poivrée",
+      "latin": "Mentha × piperita",
+      "layer": "herb",
+      "zone": "Zone fraîche",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "fraîcheur",
+        "aromatique"
+      ],
+      "intro": "Aromatique de l’ombre fraîche, très utile en infusions.",
+      "story": "À contenir par bordure ou pot enterré.",
+      "secret": "",
+      "origin": "Horticole",
+      "hardiness": "-25°C",
+      "soil": "Frais",
+      "water": "Moyen",
+      "yield": "Feuilles",
+      "eco": [
+        "Couverture de sol",
+        "Repousse insectes"
+      ],
+      "nursery": "Éclats de touffes.",
+      "image": "assets/img/menthe_poiree.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1120,
+        "y": 610
+      }
+    },
+    {
+      "id": "origan",
+      "name": "Origan",
+      "latin": "Origanum vulgare",
+      "layer": "herb",
+      "zone": "Rocaille / bordures",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "aromatique",
+        "sec"
+      ],
+      "intro": "Aromatique vivace idéale sur calcaire.",
+      "story": "Très mellifère, se ressème facilement.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-20°C",
+      "soil": "Calcaire sec",
+      "water": "Faible",
+      "yield": "Feuilles aromatiques",
+      "eco": [
+        "Nectar d’été"
+      ],
+      "nursery": "Plants en pot.",
+      "image": "assets/img/origan.jpg",
+      "audio": "",
+      "pos": {
+        "x": 860,
+        "y": 660
+      }
+    },
+    {
+      "id": "fraisier",
+      "name": "Fraisier des bois",
+      "latin": "Fragaria vesca",
+      "layer": "groundcover",
+      "zone": "Sous-étage ombré",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "couvre-sol",
+        "petits fruits"
+      ],
+      "intro": "Couvre-sol comestible parfait sous fruitiers.",
+      "story": "Aime mi-ombre et sol paillé.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Humifère",
+      "water": "Moyen",
+      "yield": "Petites fraises parfumées",
+      "eco": [
+        "Couvre-sol anti-adventices"
+      ],
+      "nursery": "Plants stolonifères.",
+      "image": "assets/img/fraisier.jpg",
+      "audio": "",
+      "pos": {
+        "x": 980,
+        "y": 580
+      }
+    },
+    {
+      "id": "thym_serpolet",
+      "name": "Thym serpolet",
+      "latin": "Thymus serpyllum",
+      "layer": "groundcover",
+      "zone": "Zones sèches",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "aromatique",
+        "sec",
+        "mellifère"
+      ],
+      "intro": "Couvre-sol aromatique, très parfumé, idéal sur calcaire.",
+      "story": "Supporte le piétinement léger.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-20°C",
+      "soil": "Calcaire sec",
+      "water": "Très faible",
+      "yield": "Sommités fleuries",
+      "eco": [
+        "Nectar",
+        "Couvre-sol"
+      ],
+      "nursery": "Plants en godet.",
+      "image": "assets/img/thym_serpolet.jpg",
+      "audio": "",
+      "pos": {
+        "x": 700,
+        "y": 720
+      }
+    },
+    {
+      "id": "ail_des_ours",
+      "name": "Ail des ours",
+      "latin": "Allium ursinum",
+      "layer": "rhizosphere",
+      "zone": "Sous-bois frais",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "bulbe",
+        "ombre"
+      ],
+      "intro": "Bulbe vivace de sous‑bois, feuilles ailées au printemps.",
+      "story": "Très bon indicateur de sol vivant et humifère.",
+      "secret": "",
+      "origin": "Europe",
+      "hardiness": "-25°C",
+      "soil": "Humifère frais",
+      "water": "Moyen",
+      "yield": "Feuilles/bulbes",
+      "eco": [
+        "Couvre-sol de printemps"
+      ],
+      "nursery": "Bulbilles en saison.",
+      "image": "assets/img/ail_des_ours.jpg",
+      "audio": "",
+      "pos": {
+        "x": 1080,
+        "y": 640
+      }
+    },
+    {
+      "id": "topinambour",
+      "name": "Topinambour",
+      "latin": "Helianthus tuberosus",
+      "layer": "rhizosphere",
+      "zone": "Potager / bordure",
+      "category": "standard",
+      "totem": false,
+      "tags": [
+        "tubercule",
+        "biomasse"
+      ],
+      "intro": "Tubercule rustique et productif, bon brise-vent temporaire.",
+      "story": "À contenir une fois implanté.",
+      "secret": "",
+      "origin": "Amérique du Nord",
+      "hardiness": "-30°C",
+      "soil": "Tous sols",
+      "water": "Faible à moyen",
+      "yield": "2–4 kg/m²",
+      "eco": [
+        "Biomasse",
+        "Fleurs tardives"
+      ],
+      "nursery": "Tubercules en saison.",
+      "image": "assets/img/topinambour.jpg",
+      "audio": "",
+      "pos": {
+        "x": 820,
+        "y": 760
+      }
+    }
+  ]
+}
