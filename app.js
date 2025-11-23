@@ -1077,6 +1077,28 @@ function studioStatus(text){
   if(el) el.textContent = text;
 }
 
+function ensureThreeForStudio(callback){
+  if(window.THREE) return callback();
+  const existing = document.getElementById("threejs-cdn");
+  const onload = ()=> {
+    studioStatus("Palette prête. Sélectionne un élément.");
+    callback();
+  };
+  const onerror = ()=>{
+    studioStatus("Impossible de charger Three.js. Vérifie ta connexion.");
+  };
+  if(existing){
+    existing.addEventListener("load", onload, {once:true});
+    existing.addEventListener("error", onerror, {once:true});
+    return;
+  }
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js";
+  script.onload = onload;
+  script.onerror = onerror;
+  document.head.appendChild(script);
+}
+
 function studioSetActiveAsset(id){
   state.studio.activeAsset = id;
   renderStudioPalette();
@@ -1229,8 +1251,11 @@ function initStudio(){
   renderStudioPalette();
   renderStudioList();
   renderStudioDetails();
-  initStudioCanvas();
-  studioStatus("Palette inactive.");
+  studioStatus("Chargement de la scène 3D…");
+  ensureThreeForStudio(()=>{
+    initStudioCanvas();
+    studioStatus("Sélectionne un élément et clique dans la scène.");
+  });
   const propName = $("#studioPropName");
   if(propName) propName.addEventListener("input", e=> studioUpdateSelected("name", e.target.value));
   const propHeight = $("#studioPropHeight");
@@ -1255,7 +1280,7 @@ function initStudio(){
 
 function initStudioCanvas(){
   const canvas = $("#studioCanvas");
-  if(!canvas || !window.THREE) return;
+  if(!canvas || !window.THREE || state.studio.renderer) return;
   state.studio.canvas = canvas;
   const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
   renderer.setPixelRatio(window.devicePixelRatio||1);
