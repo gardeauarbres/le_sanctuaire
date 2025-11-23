@@ -348,6 +348,14 @@
               </div>
               <div class="qr">QR</div>
             </a>
+            <a class="sponsor__item" href="https://my.sogexia.com/s/4pyxev2n" target="_blank" rel="noreferrer noopener" data-sponsor="sogexia">
+              <div class="sponsor__logo">Sogexia</div>
+              <div class="sponsor__meta">
+                <div>Carte & dons</div>
+                <div class="small"><span id="sogexiaClicks">0</span> clics</div>
+              </div>
+              <div class="qr">QR</div>
+            </a>
             <a class="sponsor__item" href="#" data-sponsor="lydia">
               <div class="sponsor__logo">Lydia</div>
               <div class="sponsor__meta">
@@ -465,7 +473,66 @@
       <button class="bottomnav__btn" data-go="sponsor">🤝 Soutenir</button>
       <button class="bottomnav__btn" data-go="tour">🚶 Visite</button>
       <button class="bottomnav__btn" data-go="iso3d">🧊 3D</button>
+      <button class="bottomnav__btn" data-go="studio">🎨 Studio</button>
     </nav>
+    <!-- 10) Studio 3D personnalisé -->
+    <section id="studio" class="screen" data-screen="studio">
+      <header class="topbar">
+        <div class="topbar__left">
+          <button class="iconbtn" id="studioBack">←</button>
+          <div>
+            <div class="kicker">Création</div>
+            <div class="title">Studio 3D personnalisé</div>
+          </div>
+        </div>
+        <div class="topbar__right">
+          <button class="iconbtn" id="studioReset" title="Réinitialiser">↺</button>
+          <button class="iconbtn" id="studioSave" title="Sauvegarder">💾</button>
+          <button class="iconbtn" id="studioExport" title="Exporter">⬇</button>
+        </div>
+      </header>
+
+      <div class="studio">
+        <aside class="studio__sidebar">
+          <div class="studio__section">
+            <h3>Palette</h3>
+            <p class="small">Choisis un élément puis clique dans la scène.</p>
+            <div id="studioPalette" class="studio__palette"></div>
+          </div>
+
+          <div class="studio__section">
+            <h3>Objets placés</h3>
+            <div id="studioList" class="studio__list empty">Aucun élément.</div>
+          </div>
+
+          <div class="studio__section">
+            <h3>Propriétés</h3>
+            <label class="studio__field">
+              <span>Nom</span>
+              <input id="studioPropName" type="text" placeholder="Nom de l'élément" />
+            </label>
+            <label class="studio__field">
+              <span>Hauteur</span>
+              <input id="studioPropHeight" type="range" min="1" max="30" step="1" />
+              <div class="small" id="studioHeightValue">—</div>
+            </label>
+            <label class="studio__field">
+              <span>Notes</span>
+              <textarea id="studioPropNotes" rows="3" placeholder="Notes ou usages..."></textarea>
+            </label>
+            <button class="btn btn--ghost w100" id="studioDelete">Supprimer</button>
+          </div>
+        </aside>
+
+        <div class="studio__canvaswrap">
+          <canvas id="studioCanvas" width="1200" height="720"></canvas>
+          <div class="studio__hint">
+            <strong>Conseil :</strong> Clique-glisse pour pivoter la caméra, molette pour zoomer.
+            <span id="studioStatus">Palette inactive.</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
       <footer class="footer">
         <div><strong>Gard Eau Arbres</strong> — Ramon Alain (G.E.A)</div>
@@ -491,6 +558,7 @@
     <source src="assets/audio/ambience.mp3" type="audio/mpeg">
   </audio>
 
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js" defer></script>
   <script src="config.js"></script>
   <script src="app.js"></script>
 </body>

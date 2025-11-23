@@ -34,7 +34,18 @@ const BACKEND_ENABLED = Boolean(APP_CONFIG.BACKEND_ENABLED);
 const CACHE_VERSION = APP_CONFIG.CACHE_VERSION;
 const DEBOUNCE_DELAY = APP_CONFIG.DEBOUNCE_DELAY;
 
-const SCREENS = ["portal","map","plant","quest","future","asso","sponsor","tour","iso3d"];
+const STUDIO_ASSETS = [
+  {id:"canopy", label:"Grand arbre", color:"#53c27c", height:18, shape:"cone"},
+  {id:"subcanopy", label:"Arbre moyen", color:"#75d39a", height:14, shape:"cone"},
+  {id:"shrub", label:"Arbuste", color:"#ffcf6a", height:9, shape:"cylinder"},
+  {id:"herb", label:"Herbacée", color:"#ff9e5c", height:4, shape:"cylinder"},
+  {id:"water", label:"Point d'eau", color:"#6dd6ff", height:1.5, shape:"disk"},
+  {id:"structure", label:"Structure légère", color:"#d0c0ff", height:8, shape:"box"},
+  {id:"rock", label:"Roche / totem", color:"#9ea7b8", height:6, shape:"pyramid"},
+  {id:"custom", label:"Personnalisé", color:"#ffffff", height:10, shape:"box"}
+];
+
+const SCREENS = ["portal","map","plant","quest","future","asso","sponsor","tour","iso3d","studio"];
 const state = {
   tourAudio: new Audio(),
   tourPlaying: false,
@@ -49,7 +60,28 @@ const state = {
   questFound: new Set(),
   muted: false,
   cache: new Map(), // Cache pour les données
-  imageObserver: null // IntersectionObserver pour lazy loading
+  imageObserver: null, // IntersectionObserver pour lazy loading
+  studio: {
+    items: [],
+    selectedId: null,
+    activeAsset: null,
+    meshes: new Map(),
+    renderer: null,
+    scene: null,
+    camera: null,
+    plane: null,
+    grid: null,
+    raycaster: null,
+    pointer: null,
+    canvas: null,
+    meshGroup: null,
+    needsRender: false,
+    orbit: {azimuth: 40, polar: 55, radius: 120},
+    animId: null,
+    dragging: false,
+    dragMoved: false,
+    lastPointer: {x:0,y:0}
+  }
 };
 
 // ---------- Utils optimisés ----------
@@ -138,11 +170,13 @@ function saveLocal(){
     }
     const finomEl = $("#finomClicks");
     const paypalEl = $("#paypalClicks");
+    const sogexiaEl = $("#sogexiaClicks");
     const lydiaEl = $("#lydiaClicks");
     if(finomEl && paypalEl && lydiaEl) {
       localStorage.setItem("gea_sanctuary_sponsor", JSON.stringify({
         finom: +finomEl.textContent,
         paypal: +paypalEl.textContent,
+        sogexia: +(sogexiaEl?.textContent || 0),
         lydia: +lydiaEl.textContent
       }));
     }
@@ -1016,6 +1050,409 @@ function renderFutureStats(){
   });
 }
 
+// ---------- Studio 3D personnalisé ----------
+function loadStudioScene(){
+  try{
+    const raw = localStorage.getItem("gea_studio_scene");
+    if(raw){
+      const arr = JSON.parse(raw);
+      if(Array.isArray(arr)) state.studio.items = arr;
+    }
+  }catch(e){
+    handleError(e, "loadStudioScene");
+  }
+}
+
+function saveStudioScene(){
+  try{
+    localStorage.setItem("gea_studio_scene", JSON.stringify(state.studio.items));
+    studioStatus("Scène sauvegardée.");
+  }catch(e){
+    handleError(e, "saveStudioScene");
+  }
+}
+
+function studioStatus(text){
+  const el = $("#studioStatus");
+  if(el) el.textContent = text;
+}
+
+function studioSetActiveAsset(id){
+  state.studio.activeAsset = id;
+  renderStudioPalette();
+  studioStatus(id ? "Clique dans la scène pour placer un élément." : "Palette inactive.");
+}
+
+function renderStudioPalette(){
+  const wrap = $("#studioPalette");
+  if(!wrap) return;
+  wrap.innerHTML = "";
+  STUDIO_ASSETS.forEach(asset=>{
+    const btn = document.createElement("button");
+    btn.className = "studio__asset"+(state.studio.activeAsset===asset.id?" active":"");
+    btn.style.setProperty("--asset-color", asset.color);
+    btn.innerHTML = `<span class="asset__icon">●</span><span>${asset.label}</span>`;
+    btn.onclick = ()=> studioSetActiveAsset(asset.id);
+    wrap.appendChild(btn);
+  });
+}
+
+function renderStudioList(){
+  const list = $("#studioList");
+  if(!list) return;
+  if(!state.studio.items.length){
+    list.classList.add("empty");
+    list.textContent = "Aucun élément.";
+    return;
+  }
+  list.classList.remove("empty");
+  list.innerHTML = "";
+  state.studio.items.forEach(item=>{
+    const row = document.createElement("button");
+    row.className = "studio__listItem"+(item.id===state.studio.selectedId?" is-active":"");
+    row.innerHTML = `<span>${item.name || item.asset}</span><small>${item.asset}</small>`;
+    row.onclick = ()=> studioSelectItem(item.id);
+    list.appendChild(row);
+  });
+}
+
+function renderStudioDetails(){
+  const nameInput = $("#studioPropName");
+  const heightInput = $("#studioPropHeight");
+  const notesInput = $("#studioPropNotes");
+  const heightLabel = $("#studioHeightValue");
+  const deleteBtn = $("#studioDelete");
+  const item = state.studio.items.find(i=>i.id===state.studio.selectedId);
+  const hasItem = Boolean(item);
+  [nameInput,heightInput,notesInput,deleteBtn].forEach(el=>{
+    if(!el) return;
+    el.disabled = !hasItem;
+  });
+  if(!item){
+    if(nameInput) nameInput.value = "";
+    if(heightInput) heightInput.value = 10;
+    if(notesInput) notesInput.value = "";
+    if(heightLabel) heightLabel.textContent = "—";
+    return;
+  }
+  if(nameInput) nameInput.value = item.name || "";
+  if(heightInput){
+    const h = item.height ?? 10;
+    heightInput.value = h;
+    if(heightLabel) heightLabel.textContent = `${Math.round(h)} m`;
+  }
+  if(notesInput) notesInput.value = item.notes || "";
+}
+
+function studioSelectItem(id){
+  state.studio.selectedId = id;
+  renderStudioList();
+  renderStudioDetails();
+  highlightStudioSelection();
+}
+
+function studioAddItem(position){
+  const asset = STUDIO_ASSETS.find(a=>a.id===state.studio.activeAsset);
+  if(!asset){
+    studioStatus("Choisis un élément dans la palette.");
+    return;
+  }
+  const id = `studio_${Date.now()}_${Math.floor(Math.random()*1000)}`;
+  const item = {
+    id,
+    asset: asset.id,
+    name: `${asset.label}`,
+    height: asset.height,
+    color: asset.color,
+    notes: "",
+    position:{
+      x: Math.max(-110, Math.min(110, position.x)),
+      z: Math.max(-110, Math.min(110, position.z))
+    }
+  };
+  state.studio.items.push(item);
+  saveStudioScene();
+  renderStudioList();
+  studioSelectItem(id);
+  rebuildStudioMeshes();
+}
+
+function studioUpdateSelected(prop, value){
+  const item = state.studio.items.find(i=>i.id===state.studio.selectedId);
+  if(!item) return;
+  item[prop] = value;
+  saveStudioScene();
+  renderStudioList();
+  rebuildStudioMeshes();
+}
+
+function studioDeleteSelected(){
+  if(!state.studio.selectedId) return;
+  state.studio.items = state.studio.items.filter(i=>i.id!==state.studio.selectedId);
+  state.studio.selectedId = null;
+  saveStudioScene();
+  renderStudioList();
+  renderStudioDetails();
+  rebuildStudioMeshes();
+}
+
+function studioResetScene(){
+  if(!state.studio.items.length) return;
+  if(confirm("Effacer tous les éléments de votre scène personnalisée ?")){
+    state.studio.items = [];
+    state.studio.selectedId = null;
+    saveStudioScene();
+    renderStudioList();
+    renderStudioDetails();
+    rebuildStudioMeshes();
+  }
+}
+
+function studioExportScene(){
+  const data = JSON.stringify(state.studio.items, null, 2);
+  if(navigator.clipboard?.writeText){
+    navigator.clipboard.writeText(data).then(()=>{
+      studioStatus("JSON copié dans le presse-papiers.");
+    }).catch(()=>{
+      studioStatus("Impossible de copier automatiquement.");
+    });
+  }else{
+    studioStatus("Copie manuelle : "+data.slice(0,80)+"...");
+  }
+}
+
+function initStudio(){
+  loadStudioScene();
+  if(!state.studio.activeAsset && STUDIO_ASSETS[0]){
+    state.studio.activeAsset = STUDIO_ASSETS[0].id;
+  }
+  renderStudioPalette();
+  renderStudioList();
+  renderStudioDetails();
+  initStudioCanvas();
+  studioStatus("Palette inactive.");
+  const propName = $("#studioPropName");
+  if(propName) propName.addEventListener("input", e=> studioUpdateSelected("name", e.target.value));
+  const propHeight = $("#studioPropHeight");
+  if(propHeight) propHeight.addEventListener("input", e=>{
+    const v = Number(e.target.value);
+    $("#studioHeightValue").textContent = `${v} m`;
+    studioUpdateSelected("height", v);
+  });
+  const propNotes = $("#studioPropNotes");
+  if(propNotes) propNotes.addEventListener("input", e=> studioUpdateSelected("notes", e.target.value));
+  const deleteBtn = $("#studioDelete");
+  if(deleteBtn) deleteBtn.onclick = studioDeleteSelected;
+  const backBtn = $("#studioBack");
+  if(backBtn) backBtn.onclick = ()=> go("map");
+  const resetBtn = $("#studioReset");
+  if(resetBtn) resetBtn.onclick = studioResetScene;
+  const saveBtn = $("#studioSave");
+  if(saveBtn) saveBtn.onclick = saveStudioScene;
+  const exportBtn = $("#studioExport");
+  if(exportBtn) exportBtn.onclick = studioExportScene;
+}
+
+function initStudioCanvas(){
+  const canvas = $("#studioCanvas");
+  if(!canvas || !window.THREE) return;
+  state.studio.canvas = canvas;
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(window.devicePixelRatio||1);
+  renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x010302);
+  const camera = new THREE.PerspectiveCamera(55, canvas.clientWidth/canvas.clientHeight, 0.1, 2000);
+  state.studio.renderer = renderer;
+  state.studio.scene = scene;
+  state.studio.camera = camera;
+  updateStudioCamera();
+  const hemi = new THREE.HemisphereLight(0xffffff, 0x0f1a12, 0.7);
+  scene.add(hemi);
+  const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+  dir.position.set(120, 200, 80);
+  scene.add(dir);
+  const planeGeo = new THREE.PlaneGeometry(240, 240, 1, 1);
+  const planeMat = new THREE.MeshStandardMaterial({color:0x0b2116, side:THREE.DoubleSide});
+  const plane = new THREE.Mesh(planeGeo, planeMat);
+  plane.rotation.x = -Math.PI/2;
+  scene.add(plane);
+  state.studio.plane = plane;
+  const grid = new THREE.GridHelper(240, 24, 0x335642, 0x1f3c2c);
+  scene.add(grid);
+  state.studio.grid = grid;
+  state.studio.meshGroup = new THREE.Group();
+  scene.add(state.studio.meshGroup);
+  state.studio.raycaster = new THREE.Raycaster();
+  state.studio.pointer = new THREE.Vector2();
+  canvas.addEventListener("pointerdown", studioPointerDown);
+  canvas.addEventListener("pointermove", studioPointerMove);
+  canvas.addEventListener("pointerup", studioPointerUp);
+  canvas.addEventListener("click", studioCanvasClick);
+  canvas.addEventListener("wheel", studioHandleWheel, {passive:true});
+  window.addEventListener("resize", studioHandleResize);
+  rebuildStudioMeshes();
+  studioAnimate();
+}
+
+function updateStudioCamera(){
+  const {azimuth, polar, radius} = state.studio.orbit;
+  const radAz = azimuth * Math.PI/180;
+  const radPol = polar * Math.PI/180;
+  const r = radius;
+  const x = r * Math.sin(radPol) * Math.cos(radAz);
+  const y = r * Math.cos(radPol);
+  const z = r * Math.sin(radPol) * Math.sin(radAz);
+  if(state.studio.camera){
+    state.studio.camera.position.set(x, y, z);
+    state.studio.camera.lookAt(0,0,0);
+  }
+}
+
+function rebuildStudioMeshes(){
+  const group = state.studio.meshGroup;
+  if(!group || !window.THREE) return;
+  while(group.children.length){
+    group.remove(group.children[0]);
+  }
+  const selected = state.studio.selectedId;
+  state.studio.items.forEach(item=>{
+    const mesh = createStudioMesh(item, selected);
+    group.add(mesh);
+  });
+  scheduleStudioRender();
+}
+
+function createStudioMesh(item, selectedId){
+  const asset = STUDIO_ASSETS.find(a=>a.id===item.asset) || STUDIO_ASSETS[0];
+  let geometry;
+  const height = (item.height || asset.height || 10);
+  const color = item.color || asset.color;
+  switch(asset.shape){
+    case "cone":
+      geometry = new THREE.ConeGeometry(height*0.35, height, 8);
+      break;
+    case "cylinder":
+      geometry = new THREE.CylinderGeometry(height*0.3, height*0.4, height, 12);
+      break;
+    case "disk":
+      geometry = new THREE.CylinderGeometry(height, height, 0.8, 24);
+      break;
+    case "pyramid":
+      geometry = new THREE.ConeGeometry(height*0.4, height, 4);
+      break;
+    case "box":
+    default:
+      geometry = new THREE.BoxGeometry(height*0.6, height, height*0.6);
+  }
+  const material = new THREE.MeshStandardMaterial({color});
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(item.position?.x || 0, height/2, item.position?.z || 0);
+  mesh.userData = {id:item.id};
+  if(item.id===selectedId){
+    mesh.scale.setScalar(1.08);
+    mesh.material.emissive = new THREE.Color(0x224433);
+  }
+  return mesh;
+}
+
+function highlightStudioSelection(){
+  if(!state.studio.meshGroup) return;
+  state.studio.meshGroup.children.forEach(mesh=>{
+    const selected = mesh.userData.id===state.studio.selectedId;
+    mesh.scale.setScalar(selected ? 1.08 : 1);
+    if(mesh.material){
+      mesh.material.emissive = new THREE.Color(selected ? 0x224433 : 0x000000);
+    }
+  });
+  scheduleStudioRender();
+}
+
+function studioPointerDown(e){
+  if(!state.studio.canvas) return;
+  state.studio.dragging = true;
+  state.studio.dragMoved = false;
+  state.studio.lastPointer = {x:e.clientX, y:e.clientY};
+  state.studio.canvas.setPointerCapture(e.pointerId);
+}
+
+function studioPointerMove(e){
+  if(!state.studio.dragging) return;
+  const dx = e.clientX - state.studio.lastPointer.x;
+  const dy = e.clientY - state.studio.lastPointer.y;
+  if(Math.abs(dx)>2 || Math.abs(dy)>2){
+    state.studio.dragMoved = true;
+  }
+  state.studio.lastPointer = {x:e.clientX, y:e.clientY};
+  state.studio.orbit.azimuth = (state.studio.orbit.azimuth - dx*0.25) % 360;
+  state.studio.orbit.polar = Math.max(20, Math.min(85, state.studio.orbit.polar + dy*0.2));
+  updateStudioCamera();
+  scheduleStudioRender();
+}
+
+function studioPointerUp(e){
+  state.studio.dragging = false;
+  if(state.studio.canvas) state.studio.canvas.releasePointerCapture(e.pointerId);
+}
+
+function studioCanvasClick(e){
+  if(state.studio.dragMoved) return;
+  handleStudioRaycast(e);
+}
+
+function handleStudioRaycast(e){
+  if(!state.studio.canvas || !state.studio.raycaster || !state.studio.pointer) return;
+  const rect = state.studio.canvas.getBoundingClientRect();
+  state.studio.pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+  state.studio.pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+  state.studio.raycaster.setFromCamera(state.studio.pointer, state.studio.camera);
+  const objectHits = state.studio.meshGroup ? state.studio.raycaster.intersectObjects(state.studio.meshGroup.children, false) : [];
+  if(objectHits.length){
+    studioSelectItem(objectHits[0].object.userData.id);
+    studioStatus("Élément sélectionné.");
+    return;
+  }
+  if(state.studio.activeAsset){
+    const planeHit = state.studio.raycaster.intersectObject(state.studio.plane);
+    if(planeHit.length){
+      studioAddItem(planeHit[0].point);
+      return;
+    }
+  }
+  studioStatus("Rien ici. Choisis un élément pour le placer.");
+}
+
+function studioHandleWheel(e){
+  const delta = Math.sign(e.deltaY);
+  state.studio.orbit.radius = Math.max(40, Math.min(220, state.studio.orbit.radius + delta*6));
+  updateStudioCamera();
+  scheduleStudioRender();
+}
+
+function studioHandleResize(){
+  const canvas = state.studio.canvas;
+  if(!canvas || !state.studio.renderer || !state.studio.camera) return;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  state.studio.renderer.setSize(width, height, false);
+  state.studio.camera.aspect = width / height;
+  state.studio.camera.updateProjectionMatrix();
+  scheduleStudioRender();
+}
+
+function studioAnimate(){
+  if(!state.studio.renderer || !state.studio.scene || !state.studio.camera) return;
+  state.studio.animId = requestAnimationFrame(studioAnimate);
+  if(state.studio.needsRender){
+    state.studio.renderer.render(state.studio.scene, state.studio.camera);
+    state.studio.needsRender = false;
+  }
+}
+
+function scheduleStudioRender(){
+  state.studio.needsRender = true;
+}
+
 // ---------- Sponsor counters (demo) ----------
 function bumpSponsor(id){
   if(!id) return;
@@ -1256,6 +1693,7 @@ function handleHash(){
     setupImageObserver();
     initParallax();
     wireEvents();
+    initStudio();
     await loadPlants();
     renderFuture();
     go("portal");
