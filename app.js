@@ -588,6 +588,7 @@ function renderMap(){
   
   pointsG.appendChild(fragment);
   updateMapBadge();
+  window.iso3d?.refreshPlants?.();
 }
 
 function updateMapBadge(){
